@@ -18,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-@Transactional
 public class TaskService {
 
     private final TaskRepository taskRepository;
@@ -38,6 +37,7 @@ public class TaskService {
         return taskSet;
     }
 
+    @Transactional // this is the only non-atomic database update
     public void updateTask(Long id, Map<String, String> updates)
             throws TaskNotFoundException, TaskStatusInvalidException, TaskUpdateNotSupportedException {
 
