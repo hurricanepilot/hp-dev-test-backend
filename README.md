@@ -29,7 +29,7 @@ java -jar target/hmcts-dev-test-backend-0.0.1-SNAPSHOT.jar
 Alternatively, to run the project using the `run` goal of the `spring-boot` maven plugin, you can use:
 
 ```bash
-mvn clean package spring-boot::run
+mvn clean package spring-boot:run
 ```
 
 Once running the service will be available on `http://localhost:8080`
