@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 @Data
 @RequiredArgsConstructor
 @Schema(description = "The schema used for all Error responses from the REST service")
-public class Error {
+public class ErrorDetail {
     @Schema(description = "The HTTP status code for the error", accessMode = AccessMode.READ_ONLY)
     private final int status;
     @Schema(description = "The error detail message", accessMode = AccessMode.READ_ONLY)

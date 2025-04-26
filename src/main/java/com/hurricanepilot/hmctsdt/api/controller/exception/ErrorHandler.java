@@ -9,7 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.hurricanepilot.hmctsdt.api.model.Error;
+import com.hurricanepilot.hmctsdt.api.model.ErrorDetail;
 import com.hurricanepilot.hmctsdt.service.exception.TaskNotFoundException;
 import com.hurricanepilot.hmctsdt.service.exception.TaskStatusInvalidException;
 import com.hurricanepilot.hmctsdt.service.exception.TaskUpdateNotSupportedException;
@@ -18,25 +18,25 @@ import com.hurricanepilot.hmctsdt.service.exception.TaskUpdateNotSupportedExcept
 public class ErrorHandler {
 
     @ExceptionHandler(exception = TaskNotFoundException.class)
-    public ResponseEntity<Error> handleTaskNotFound(TaskNotFoundException e) {
+    public ResponseEntity<ErrorDetail> handleTaskNotFound(TaskNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(new Error(HttpStatus.NOT_FOUND.value(), e.getMessage()));
+                .body(new ErrorDetail(HttpStatus.NOT_FOUND.value(), e.getMessage()));
     }
 
     @ExceptionHandler(exception = TaskStatusInvalidException.class)
-    public ResponseEntity<Error> handleInvalidStatus(TaskStatusInvalidException e) {
+    public ResponseEntity<ErrorDetail> handleInvalidStatus(TaskStatusInvalidException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new Error(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
+                .body(new ErrorDetail(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
     }
 
     @ExceptionHandler(exception = TaskUpdateNotSupportedException.class)
-    public ResponseEntity<Error> handleInvalidStatus(TaskUpdateNotSupportedException e) {
+    public ResponseEntity<ErrorDetail> handleInvalidStatus(TaskUpdateNotSupportedException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new Error(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
+                .body(new ErrorDetail(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
     }
 
     @ExceptionHandler(exception = MethodArgumentNotValidException.class)
-    public ResponseEntity<Error> handleValidationError(MethodArgumentNotValidException e) {
+    public ResponseEntity<ErrorDetail> handleValidationError(MethodArgumentNotValidException e) {
 
         var builder = new StringBuilder("Validation errors are present:\n");
 
@@ -49,11 +49,11 @@ public class ErrorHandler {
         });
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new Error(HttpStatus.BAD_REQUEST.value(), builder.toString()));
+                .body(new ErrorDetail(HttpStatus.BAD_REQUEST.value(), builder.toString()));
     }
 
     @ExceptionHandler(exception = Exception.class)
-    public ResponseEntity<Error> handleError(Exception e) {
+    public ResponseEntity<ErrorDetail> handleError(Exception e) {
 
         var status = HttpStatusCode.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value());
         var message = "Internal Server Error";
@@ -66,7 +66,7 @@ public class ErrorHandler {
         }
 
         return ResponseEntity.status(status)
-                .body(new Error(status.value(), message));
+                .body(new ErrorDetail(status.value(), message));
     }
 
 }

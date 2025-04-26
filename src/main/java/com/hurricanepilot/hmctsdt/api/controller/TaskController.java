@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.hurricanepilot.hmctsdt.api.model.Error;
+import com.hurricanepilot.hmctsdt.api.model.ErrorDetail;
 import com.hurricanepilot.hmctsdt.api.model.Task;
 import com.hurricanepilot.hmctsdt.service.TaskService;
 import com.hurricanepilot.hmctsdt.service.exception.TaskNotFoundException;
@@ -57,14 +57,14 @@ public class TaskController {
     @GetMapping(path = "/{id}")
     @Operation(summary = "Retrieve a Task", description = "Retrieves the Task related to the given ID")
     @ApiResponse(responseCode = "200", description = "The retrieved Task", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = Task.class)))
-    @ApiResponse(responseCode = "404", description = "Task not found", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = Error.class)))
+    @ApiResponse(responseCode = "404", description = "Task not found", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorDetail.class)))
     public ResponseEntity<Task> retrieveTask(@PathVariable Long id) throws TaskNotFoundException {
         return ResponseEntity.ok().body(Task.fromEntity(taskService.find(id)));
     }
 
     @GetMapping(path = "")
     @Operation(summary = "Retrieve all Tasks", description = "Retrieves all Tasks")
-    @ApiResponse(responseCode = "200", description = "The retrieved Tasks", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, array = @ArraySchema(schema = @Schema(implementation = Error.class))))
+    @ApiResponse(responseCode = "200", description = "The retrieved Tasks", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, array = @ArraySchema(schema = @Schema(implementation = ErrorDetail.class))))
     public ResponseEntity<List<Task>> retrieveAllTasks() {
         return ResponseEntity.ok().body(taskService.retrieveAll().stream().map(Task::fromEntity).toList());
     }
@@ -80,8 +80,8 @@ public class TaskController {
     @PatchMapping(path = "/{id}")
     @Operation(summary = "Update a Task", description = "Updates the task for the given ID")
     @ApiResponse(responseCode = "200", description = "Task updated")
-    @ApiResponse(responseCode = "400", description = "Invalid update specified", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = Error.class)))
-    @ApiResponse(responseCode = "404", description = "Task not found", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = Error.class)))
+    @ApiResponse(responseCode = "400", description = "Invalid update specified", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorDetail.class)))
+    @ApiResponse(responseCode = "404", description = "Task not found", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorDetail.class)))
     public ResponseEntity<Void> updateTaskStatus(@PathVariable Long id, @RequestBody Map<String, String> taskUpdates)
             throws TaskNotFoundException, TaskStatusInvalidException, TaskUpdateNotSupportedException {
         // can't be null as taskUpdates is a required field
